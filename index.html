@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMD – Partenariat Entreprise | EPHEC</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2a9d74;
+    --green-light: #3dbf8e;
+    --green-pale: rgba(42,157,116,0.08);
+    --white: #faf9f6;
+    --black: #0d0d0d;
+    --grey: #f2f0eb;
+    --grey-dark: #e5e2da;
+    --text: #1a1a1a;
+    --text-mid: #555;
+    --text-light: #888;
+    --border: #dddbd4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── LANG SWITCHER ── */
+  .lang-bar {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    gap: 6px;
+  }
+  .lang-btn {
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+    opacity: 0.5;
+  }
+  .lang-btn.active { background: var(--green); opacity: 1; }
+  .lang-btn:hover { opacity: 1; background: var(--green); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-right {
+    background: var(--green);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: 'CH';
+    position: absolute;
+    right: -30px;
+    bottom: -40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 280px;
+    color: rgba(255,255,255,0.08);
+    font-style: italic;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-logos {
+    position: absolute;
+    top: 32px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+  }
+  .logo-ephec {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    letter-spacing: 5px;
+    color: var(--white);
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 12px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .logo-ephec:hover { border-color: rgba(255,255,255,0.6); }
+  .logo-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.2); }
+  .logo-wallonia { font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; font-weight: 400; text-decoration: none; transition: color 0.2s; }
+  .logo-wallonia:hover { color: rgba(255,255,255,0.85); }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+    font-weight: 500;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 90px);
+    line-height: 1;
+    font-weight: 300;
+    margin-bottom: 30px;
+    animation: fadeUp 0.8s 0.1s ease forwards;
+    opacity: 0;
+  }
+  .hero-title em { font-style: italic; color: var(--green); }
+
+  .hero-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 400px;
+    font-weight: 300;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  .btn-solid {
+    background: var(--green);
+    color: var(--white);
+    padding: 14px 34px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-solid:hover { background: var(--green-light); }
+
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    padding: 14px 34px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Right panel content */
+  .hero-right-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  .mission-card {
+    background: rgba(0,0,0,0.15);
+    padding: 32px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .mission-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--white);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  .mission-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .date-badge {
+    display: inline-block;
+    background: rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,249,246,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-links { display: flex; }
+  nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 20px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-weight: 500;
+  }
+  nav a:hover, nav a.active { color: var(--text); border-bottom-color: var(--green); }
+  .nav-contact {
+    background: var(--green);
+    color: var(--white) !important;
+    padding: 10px 22px !important;
+    border-bottom: none !important;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .nav-contact:hover { background: var(--green-light); }
+
+  /* ── SECTIONS ── */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+  .section-title em { font-style: italic; color: var(--green); }
+
+  /* ── INTRO / PROJET ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: start;
+    margin-top: 40px;
+  }
+  .intro-text p {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.85;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .intro-text strong { color: var(--text); font-weight: 500; }
+
+  .intro-sidebar {
+    background: var(--black);
+    color: var(--white);
+    padding: 40px;
+  }
+  .sidebar-title {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .timeline-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .tl-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .tl-date { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 4px; font-weight: 500; }
+  .tl-text { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.6; }
+
+  /* ── AVANTAGES ── */
+  .avantages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 40px;
+  }
+  .avantage-card {
+    background: var(--grey);
+    padding: 40px 36px;
+    border-top: 3px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+  .avantage-card:hover { border-top-color: var(--green); background: var(--grey-dark); }
+  .av-icon { font-size: 32px; margin-bottom: 16px; }
+  .avantage-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .avantage-card p { font-size: 14px; color: var(--text-mid); line-height: 1.75; font-weight: 300; }
+  .avantage-card .highlight { color: var(--green); font-weight: 500; }
+
+  /* ── MISSION DETAIL ── */
+  .mission-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 40px;
+  }
+  .mission-block {
+    background: var(--grey);
+    padding: 40px 36px;
+  }
+  .mission-block.dark {
+    background: var(--black);
+    color: var(--white);
+  }
+  .mission-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .mission-block.dark h3 { color: var(--white); }
+  .mission-block p { font-size: 14px; color: var(--text-mid); line-height: 1.8; font-weight: 300; margin-bottom: 14px; }
+  .mission-block.dark p { color: rgba(255,255,255,0.55); }
+
+  .deliverable-list { list-style: none; margin-top: 10px; }
+  .deliverable-list li {
+    font-size: 14px;
+    color: var(--text-mid);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .deliverable-list li:last-child { border-bottom: none; }
+  .deliverable-list li::before { content: '→'; color: var(--green); flex-shrink: 0; font-weight: 400; }
+  .deliverable-list.white li { color: rgba(255,255,255,0.6); border-bottom-color: rgba(255,255,255,0.08); }
+  .deliverable-list.white li::before { color: var(--green-light); }
+
+  /* ── STOPS ── */
+  .stops-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 40px;
+  }
+  .stop-card {
+    background: var(--grey);
+    padding: 32px 24px;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+  .stop-card:hover { border-bottom-color: var(--green); }
+  .stop-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    color: var(--green);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .stop-country { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 6px; font-weight: 500; }
+  .stop-city { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; margin-bottom: 10px; }
+  .stop-desc { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.65; }
+
+  /* ── COST ── */
+  .cost-wrap {
+    background: var(--black);
+    color: var(--white);
+    padding: 60px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .cost-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 100px;
+    font-weight: 300;
+    color: var(--green);
+    line-height: 1;
+  }
+  .cost-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 8px; font-weight: 400; }
+  .cost-desc { font-size: 14px; color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.8; }
+  .cost-desc strong { color: var(--white); font-weight: 400; }
+
+  .includes-list { list-style: none; margin-top: 20px; }
+  .includes-list li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 12px;
+    font-weight: 300;
+  }
+  .includes-list li::before { content: '✓'; color: var(--green); flex-shrink: 0; }
+
+  /* ── EQUIPE ── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 40px;
+  }
+  .team-card {
+    background: var(--grey);
+    padding: 36px 30px;
+    transition: background 0.2s;
+  }
+  .team-card:hover { background: var(--grey-dark); }
+  .team-icon { font-size: 28px; margin-bottom: 16px; }
+  .team-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .team-card p { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.7; }
+
+  /* ── CONTACT ── */
+  .contact-wrap {
+    background: var(--green);
+    color: var(--white);
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-wrap::before {
+    content: 'IMD';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 300px;
+    color: rgba(0,0,0,0.06);
+    font-style: italic;
+    pointer-events: none;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .contact-wrap h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-wrap p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    font-weight: 300;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-white {
+    background: var(--white);
+    color: var(--green);
+    padding: 16px 44px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+    position: relative;
+    z-index: 1;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-white:hover { background: var(--grey); }
+
+  .footer-bar {
+    background: var(--black);
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-bar span { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 400; }
+  .footer-bar .gr { color: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .intro-grid, .mission-split, .cost-wrap { grid-template-columns: 1fr; }
+    .stops-row { grid-template-columns: repeat(2, 1fr); }
+    .avantages-grid, .team-grid { grid-template-columns: 1fr; }
+    .section-wrap { padding: 60px 24px; }
+    nav { padding: 0 24px; }
+    .hero-left { padding: 80px 24px 60px; }
+    .footer-bar { padding: 24px; }
+    .contact-wrap { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANG SWITCHER -->
+<div class="lang-bar">
+  <button class="lang-btn active" data-lang="fr">FR</button>
+  <button class="lang-btn" data-lang="en">EN</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-logos">
+      <a href="https://www.ephec.be/" target="_blank" class="logo-ephec">EPHEC</a>
+      <div class="logo-sep"></div>
+      <a href="https://explort.walloniaexportinvestment.be/fr/a-propos/" target="_blank" class="logo-wallonia">Sponsored by AWEX Explort</a>
+    </div>
+    <p class="hero-eyebrow" data-fr="Partenariat Entreprise · IMD 2026–27" data-en="Corporate Partnership · IMD 2026–27">Partenariat Entreprise · IMD 2026–27</p>
+    <h1 class="hero-title" data-fr="Explorez la <em>Suisse</em> avec nous." data-en="Explore <em>Switzerland</em> with us.">Explorez la <em>Suisse</em> avec nous.</h1>
+    <p class="hero-desc" data-fr="Une équipe d'étudiants en marketing international réalise une étude de marché pour votre entreprise wallonne — et part la valider sur le terrain, en novembre 2026." data-en="A team of international marketing students conducts a market study for your Walloon company — and validates it on the ground in November 2026.">Une équipe d'étudiants en marketing international réalise une étude de marché pour votre entreprise wallonne — et part la valider sur le terrain, en novembre 2026.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-solid" data-fr="Devenir entreprise partenaire" data-en="Become a partner company">Devenir entreprise partenaire</a>
+      <a href="#projet" class="btn-outline" data-fr="Découvrir le projet →" data-en="Discover the project →">Découvrir le projet →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-right-label" data-fr="Mission 2026–2027" data-en="Mission 2026–2027">Mission 2026–2027</p>
+    <div class="date-badge" data-fr="17 – 27 novembre 2026" data-en="17 – 27 November 2026">17 – 27 novembre 2026</div>
+    <div class="mission-card">
+      <h3 data-fr="🇩🇪 Düsseldorf — Medica Fair" data-en="🇩🇪 Düsseldorf — Medica Fair">🇩🇪 Düsseldorf — Medica Fair</h3>
+      <p data-fr="Le plus grand salon médical mondial. Premier contact avec les acteurs internationaux du secteur santé." data-en="The world's largest medical trade fair. First contact with international health sector players.">Le plus grand salon médical mondial. Premier contact avec les acteurs internationaux du secteur santé.</p>
+    </div>
+    <div class="mission-card">
+      <h3 data-fr="🇨🇭 Berne · Lausanne · Bâle" data-en="🇨🇭 Berne · Lausanne · Basel">🇨🇭 Berne · Lausanne · Bâle</h3>
+      <p data-fr="Trois pôles d'innovation suisses en sciences de la vie. Rencontres terrain, experts, associations professionnelles." data-en="Three Swiss life science innovation hubs. Field meetings with experts and professional associations.">Trois pôles d'innovation suisses en sciences de la vie. Rencontres terrain, experts, associations professionnelles.</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-links">
+    <a href="#projet" class="active" data-fr="Le projet" data-en="The project">Le projet</a>
+    <a href="#avantages" data-fr="Avantages" data-en="Benefits">Avantages</a>
+    <a href="#mission" data-fr="La mission" data-en="The mission">La mission</a>
+    <a href="#cout" data-fr="Investissement" data-en="Investment">Investissement</a>
+    <a href="#equipe" data-fr="L'équipe" data-en="The team">L'équipe</a>
+  </div>
+  <a href="#contact" class="nav-contact" data-fr="Nous contacter" data-en="Contact us">Nous contacter</a>
+</nav>
+
+<!-- PROJET -->
+<div class="section-wrap" id="projet">
+  <p class="section-label" data-fr="01 — Le projet" data-en="01 — The project">01 — Le projet</p>
+  <h2 class="section-title" data-fr="Une mission <em>réelle</em>.<br>Des résultats <em>concrets</em>." data-en="A <em>real</em> mission.<br><em>Concrete</em> results.">Une mission <em>réelle</em>.<br>Des résultats <em>concrets</em>.</h2>
+  <div class="intro-grid">
+    <div class="intro-text">
+      <p data-fr="Un groupe de <strong>4 à 5 étudiants en 3ème BAC Marketing</strong>, option International Market Development à l'EPHEC, réalise pour vous une étude d'exploration du marché suisse — et part la valider sur le terrain lors d'une mission commerciale de 10 jours." data-en="A group of <strong>4 to 5 BAC 3 Marketing students</strong>, specialising in International Market Development at EPHEC, conducts an exploratory study of the Swiss market for you — and validates it on the ground during a 10-day commercial mission.">Un groupe de <strong>4 à 5 étudiants en 3ème BAC Marketing</strong>, option International Market Development à l'EPHEC, réalise pour vous une étude d'exploration du marché suisse — et part la valider sur le terrain lors d'une mission commerciale de 10 jours.</p>
+      <p data-fr="La préparation commence <strong>dès mi-septembre 2026</strong>. Vous recevrez les résultats de toutes les recherches et rencontres réalisées avant, pendant et après la mission — sous forme d'un rapport stratégique complet." data-en="Preparation begins <strong>in mid-September 2026</strong>. You will receive the results of all research and meetings conducted before, during and after the mission — in the form of a comprehensive strategic report.">La préparation commence <strong>dès mi-septembre 2026</strong>. Vous recevrez les résultats de toutes les recherches et rencontres réalisées avant, pendant et après la mission — sous forme d'un rapport stratégique complet.</p>
+      <p data-fr="Votre entreprise sera accompagnée tout au long du processus par <strong>une équipe de coachs EPHEC et un conseiller AWEx</strong> spécialisé sur le marché suisse." data-en="Your company will be supported throughout the process by <strong>an EPHEC coaching team and an AWEx advisor</strong> specialised in the Swiss market.">Votre entreprise sera accompagnée tout au long du processus par <strong>une équipe de coachs EPHEC et un conseiller AWEx</strong> spécialisé sur le marché suisse.</p>
+    </div>
+    <div class="intro-sidebar">
+      <p class="sidebar-title" data-fr="Calendrier de la mission" data-en="Mission timeline">Calendrier de la mission</p>
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div>
+          <p class="tl-date" data-fr="Mi-septembre 2026" data-en="Mid-September 2026">Mi-septembre 2026</p>
+          <p class="tl-text" data-fr="Lancement du projet, rencontre avec les étudiants, brief entreprise" data-en="Project launch, meeting with students, company brief">Lancement du projet, rencontre avec les étudiants, brief entreprise</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div>
+          <p class="tl-date" data-fr="Sept. – Nov. 2026" data-en="Sept. – Nov. 2026">Sept. – Nov. 2026</p>
+          <p class="tl-text" data-fr="Analyse de marché, recherches desk, rencontres avec votre équipe" data-en="Market analysis, desk research, meetings with your team">Analyse de marché, recherches desk, rencontres avec votre équipe</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div>
+          <p class="tl-date" data-fr="17 – 27 nov. 2026" data-en="17 – 27 Nov. 2026">17 – 27 nov. 2026</p>
+          <p class="tl-text" data-fr="Mission commerciale : Düsseldorf (Medica Fair) + Berne, Lausanne, Bâle" data-en="Commercial mission: Düsseldorf (Medica Fair) + Berne, Lausanne, Basel">Mission commerciale : Düsseldorf (Medica Fair) + Berne, Lausanne, Bâle</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div>
+          <p class="tl-date" data-fr="Déc. 2026 – Jan. 2027" data-en="Dec. 2026 – Jan. 2027">Déc. 2026 – Jan. 2027</p>
+          <p class="tl-text" data-fr="Rapport final, présentation des résultats à votre direction" data-en="Final report, presentation of results to your management">Rapport final, présentation des résultats à votre direction</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVANTAGES -->
+<div class="section-wrap" id="avantages">
+  <p class="section-label" data-fr="02 — Pourquoi participer ?" data-en="02 — Why participate?">02 — Pourquoi participer ?</p>
+  <h2 class="section-title" data-fr="Quatre bonnes raisons<br>de nous rejoindre." data-en="Four good reasons<br>to join us.">Quatre bonnes raisons<br>de nous rejoindre.</h2>
+  <div class="avantages-grid">
+    <div class="avantage-card">
+      <div class="av-icon">🔍</div>
+      <h3 data-fr="Perspective unique" data-en="Unique perspective">Perspective unique</h3>
+      <p data-fr="Vos étudiants vous rapportent des informations à haute valeur ajoutée : <span class='highlight'>liste de contacts CRM</span>, présentation de vos produits/services sur le marché suisse, rencontres avec des distributeurs, importateurs et experts, veille concurrentielle approfondie." data-en="Your students bring back high-value intelligence: <span class='highlight'>CRM contact lists</span>, presentation of your products/services on the Swiss market, meetings with distributors, importers and experts, in-depth competitive intelligence.">Vos étudiants vous rapportent des informations à haute valeur ajoutée : <span class="highlight">liste de contacts CRM</span>, présentation de vos produits/services sur le marché suisse, rencontres avec des distributeurs, importateurs et experts, veille concurrentielle approfondie.</p>
+    </div>
+    <div class="avantage-card">
+      <div class="av-icon">💶</div>
+      <h3 data-fr="Coût maîtrisé" data-en="Controlled cost">Coût maîtrisé</h3>
+      <p data-fr="Une exploration complète du marché suisse pour <span class='highlight'>2.500 € maximum</span> — contribution aux frais de déplacement et rémunération du travail réalisé. Un investissement bien inférieur à une étude de marché ou à l'envoi d'un commercial sur place." data-en="A complete exploration of the Swiss market for a <span class='highlight'>maximum of €2,500</span> — contribution to travel expenses and payment for work carried out. A far lower investment than a market study or sending a sales rep on location.">Une exploration complète du marché suisse pour <span class="highlight">2.500 € maximum</span> — contribution aux frais de déplacement et rémunération du travail réalisé. Un investissement bien inférieur à une étude de marché ou à l'envoi d'un commercial sur place.</p>
+    </div>
+    <div class="avantage-card">
+      <div class="av-icon">🎓</div>
+      <h3 data-fr="Encadrement professionnel" data-en="Professional supervision">Encadrement professionnel</h3>
+      <p data-fr="La mission est suivie par une <span class='highlight'>équipe multidisciplinaire de coachs EPHEC</span> et un conseiller économique AWEx spécialisé sur le marché suisse. Vous n'êtes jamais seul dans l'aventure." data-en="The mission is supervised by a <span class='highlight'>multidisciplinary team of EPHEC coaches</span> and an AWEx economic advisor specialised in the Swiss market. You are never alone in the adventure.">La mission est suivie par une <span class="highlight">équipe multidisciplinaire de coachs EPHEC</span> et un conseiller économique AWEx spécialisé sur le marché suisse. Vous n'êtes jamais seul dans l'aventure.</p>
+    </div>
+    <div class="avantage-card">
+      <div class="av-icon">⏱️</div>
+      <h3 data-fr="Peu d'investissement temps" data-en="Minimal time commitment">Peu d'investissement temps</h3>
+      <p data-fr="Quelques rencontres avec le groupe d'étudiants pour partager vos informations et briefer l'équipe. <span class='highlight'>Le reste, c'est nous qui le faisons.</span>" data-en="Just a few meetings with the student group to share information and brief the team. <span class='highlight'>We handle everything else.</span>">Quelques rencontres avec le groupe d'étudiants pour partager vos informations et briefer l'équipe. <span class="highlight">Le reste, c'est nous qui le faisons.</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION DETAIL -->
+<div class="section-wrap" id="mission">
+  <p class="section-label" data-fr="03 — La mission terrain" data-en="03 — The field mission">03 — La mission terrain</p>
+  <h2 class="section-title" data-fr="10 jours. <em>4 étapes.</em><br>Un marché à conquérir." data-en="10 days. <em>4 stops.</em><br>A market to conquer.">10 jours. <em>4 étapes.</em><br>Un marché à conquérir.</h2>
+
+  <div class="stops-row">
+    <div class="stop-card">
+      <div class="stop-num">01</div>
+      <p class="stop-country">Allemagne</p>
+      <h3 class="stop-city">Düsseldorf</h3>
+      <p class="stop-desc" data-fr="Salon Medica Fair — le plus grand salon médical mondial. Rencontres avec les acteurs internationaux du secteur santé &amp; medtech." data-en="Medica Fair — the world's largest medical trade show. Meetings with international health &amp; medtech players.">Salon Medica Fair — le plus grand salon médical mondial. Rencontres avec les acteurs internationaux du secteur santé &amp; medtech.</p>
+    </div>
+    <div class="stop-card">
+      <div class="stop-num">02</div>
+      <p class="stop-country">Suisse</p>
+      <h3 class="stop-city">Berne</h3>
+      <p class="stop-desc" data-fr="Hub d'innovation émergent. Université top-100, Inselspital, Sitem MedTech Hub — startups et transfert technologique en santé." data-en="Emerging innovation hub. Top-100 university, Inselspital, Sitem MedTech Hub — health startups and technology transfer.">Hub d'innovation émergent. Université top-100, Inselspital, Sitem MedTech Hub — startups et transfert technologique en santé.</p>
+    </div>
+    <div class="stop-card">
+      <div class="stop-num">03</div>
+      <p class="stop-country">Suisse</p>
+      <h3 class="stop-city">Lausanne</h3>
+      <p class="stop-desc" data-fr="La « Health Valley » suisse — plus de 1.000 organisations en sciences de la vie, Biopôle, digital health et medtech." data-en="The Swiss 'Health Valley' — over 1,000 life science organisations, Biopôle, digital health and medtech.">La « Health Valley » suisse — plus de 1.000 organisations en sciences de la vie, Biopôle, digital health et medtech.</p>
+    </div>
+    <div class="stop-card">
+      <div class="stop-num">04</div>
+      <p class="stop-country">Suisse</p>
+      <h3 class="stop-city">Bâle</h3>
+      <p class="stop-desc" data-fr="Capitale mondiale de la pharmacie. Siège de Novartis, Roche et des plus grands groupes life sciences — le hub stratégique du secteur." data-en="Global pharmaceutical capital. Home to Novartis, Roche and the world's largest life science groups — the sector's strategic hub.">Capitale mondiale de la pharmacie. Siège de Novartis, Roche et des plus grands groupes life sciences — le hub stratégique du secteur.</p>
+    </div>
+  </div>
+
+  <div class="mission-split" style="margin-top:2px;">
+    <div class="mission-block">
+      <h3 data-fr="Ce que vos étudiants feront pour vous" data-en="What your students will do for you">Ce que vos étudiants feront pour vous</h3>
+      <ul class="deliverable-list">
+        <li data-fr="Analyse interne de votre entreprise (forces, faiblesses)" data-en="Internal analysis of your company (strengths, weaknesses)">Analyse interne de votre entreprise (forces, faiblesses)</li>
+        <li data-fr="Étude du marché suisse : demande, concurrence, réglementation, distribution" data-en="Swiss market study: demand, competition, regulations, distribution">Étude du marché suisse : demande, concurrence, réglementation, distribution</li>
+        <li data-fr="Rencontres terrain : experts, distributeurs, associations professionnelles" data-en="Field meetings: experts, distributors, professional associations">Rencontres terrain : experts, distributeurs, associations professionnelles</li>
+        <li data-fr="Rapport stratégique complet + présentation à votre direction" data-en="Full strategic report + presentation to your management">Rapport stratégique complet + présentation à votre direction</li>
+        <li data-fr="Recommandation : faut-il exporter en Suisse ? OUI ou NON — et pourquoi." data-en="Recommendation: should you export to Switzerland? YES or NO — and why.">Recommandation : faut-il exporter en Suisse ? OUI ou NON — et pourquoi.</li>
+      </ul>
+    </div>
+    <div class="mission-block dark">
+      <h3 data-fr="Lors de la mission, ils rencontreront" data-en="During the mission, they will meet">Lors de la mission, ils rencontreront</h3>
+      <ul class="deliverable-list white">
+        <li data-fr="Clients et utilisateurs potentiels" data-en="Potential clients and users">Clients et utilisateurs potentiels</li>
+        <li data-fr="Distributeurs et revendeurs locaux" data-en="Local distributors and retailers">Distributeurs et revendeurs locaux</li>
+        <li data-fr="Associations professionnelles du secteur" data-en="Sector professional associations">Associations professionnelles du secteur</li>
+        <li data-fr="Experts et spécialistes du marché" data-en="Market experts and specialists">Experts et spécialistes du marché</li>
+        <li data-fr="Conseiller économique AWEx Suisse" data-en="AWEx Switzerland economic advisor">Conseiller économique AWEx Suisse</li>
+        <li data-fr="Observation in situ des pratiques commerciales" data-en="On-site observation of commercial practices">Observation in situ des pratiques commerciales</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- COUT -->
+<div class="section-wrap" id="cout">
+  <p class="section-label" data-fr="04 — Investissement" data-en="04 — Investment">04 — Investissement</p>
+  <h2 class="section-title" data-fr="Un investissement <em>raisonnable</em>.<br>Un retour <em>réel</em>." data-en="A <em>reasonable</em> investment.<br>A <em>real</em> return.">Un investissement <em>raisonnable</em>.<br>Un retour <em>réel</em>.</h2>
+  <div class="cost-wrap">
+    <div>
+      <div class="cost-number">2.500€</div>
+      <p class="cost-label" data-fr="maximum par entreprise" data-en="maximum per company">maximum par entreprise</p>
+    </div>
+    <div>
+      <p class="cost-desc" data-fr="Ce forfait couvre la <strong>participation aux frais de déplacement</strong> de l'équipe (vol, hébergement, transports) et <strong>rémunère le travail réalisé</strong> par les étudiants tout au long de l'année académique." data-en="This flat fee covers the team's <strong>travel expenses</strong> (flights, accommodation, transport) and <strong>compensates the work carried out</strong> by students throughout the academic year.">Ce forfait couvre la <strong>participation aux frais de déplacement</strong> de l'équipe (vol, hébergement, transports) et <strong>rémunère le travail réalisé</strong> par les étudiants tout au long de l'année académique.</p>
+      <ul class="includes-list">
+        <li data-fr="Étude de marché suisse complète (desk + terrain)" data-en="Complete Swiss market study (desk + field)">Étude de marché suisse complète (desk + terrain)</li>
+        <li data-fr="Rapport stratégique et recommandations" data-en="Strategic report and recommendations">Rapport stratégique et recommandations</li>
+        <li data-fr="Liste de contacts CRM issus de la mission" data-en="CRM contact list from the mission">Liste de contacts CRM issus de la mission</li>
+        <li data-fr="Présentation finale à votre direction" data-en="Final presentation to your management">Présentation finale à votre direction</li>
+        <li data-fr="Suivi tout au long de l'année par les coachs EPHEC" data-en="Year-round follow-up by EPHEC coaches">Suivi tout au long de l'année par les coachs EPHEC</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- EQUIPE -->
+<div class="section-wrap" id="equipe">
+  <p class="section-label" data-fr="05 — L'équipe qui vous encadre" data-en="05 — Your support team">05 — L'équipe qui vous encadre</p>
+  <h2 class="section-title" data-fr="Vous n'êtes pas <em>seul</em>." data-en="You are not <em>alone</em>.">Vous n'êtes pas <em>seul</em>.</h2>
+  <p style="max-width:600px;color:var(--text-mid);font-weight:300;font-size:15px;" data-fr="Derrière chaque groupe d'étudiants, une équipe professionnelle veille à la qualité de la mission, coordonne les rencontres et vous soutient du début à la fin." data-en="Behind each student group, a professional team ensures the quality of the mission, coordinates meetings and supports you from start to finish.">Derrière chaque groupe d'étudiants, une équipe professionnelle veille à la qualité de la mission, coordonne les rencontres et vous soutient du début à la fin.</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-icon">🎓</div>
+      <h3 data-fr="Coachs EPHEC" data-en="EPHEC Coaches">Coachs EPHEC</h3>
+      <p data-fr="Une équipe multidisciplinaire de professeurs spécialisés en marketing international, export et langues. Ils encadrent les étudiants tout au long de l'année et sont présents sur le terrain durant la mission." data-en="A multidisciplinary team of professors specialised in international marketing, export and languages. They supervise students throughout the year and are present in the field during the mission.">Une équipe multidisciplinaire de professeurs spécialisés en marketing international, export et langues. Ils encadrent les étudiants tout au long de l'année et sont présents sur le terrain durant la mission.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-icon">🌐</div>
+      <h3 data-fr="Conseiller AWEx Suisse" data-en="AWEx Switzerland Advisor">Conseiller AWEx Suisse</h3>
+      <p data-fr="Un conseiller économique de l'Agence wallonne à l'Exportation, spécialisé sur le marché suisse, accompagne la mission sur le terrain et facilite les contacts avec les acteurs locaux." data-en="An economic advisor from the Walloon Export Agency, specialised in the Swiss market, accompanies the mission in the field and facilitates contacts with local players.">Un conseiller économique de l'Agence wallonne à l'Exportation, spécialisé sur le marché suisse, accompagne la mission sur le terrain et facilite les contacts avec les acteurs locaux.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-icon">🏢</div>
+      <h3 data-fr="Programme AWEX Explort" data-en="AWEX Explort Program">Programme AWEX Explort</h3>
+      <p data-fr="La mission est reconnue et co-financée par le programme Explort de l'AWEx, garantissant un niveau d'exigence et un cadre institutionnel sérieux pour votre entreprise." data-en="The mission is recognised and co-funded by the AWEx Explort programme, guaranteeing a high standard and a serious institutional framework for your company.">La mission est reconnue et co-financée par le programme Explort de l'AWEx, garantissant un niveau d'exigence et un cadre institutionnel sérieux pour votre entreprise.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-wrap" id="contact">
+  <h2 data-fr="Prêt à explorer la Suisse ?" data-en="Ready to explore Switzerland?">Prêt à explorer la Suisse ?</h2>
+  <p data-fr="Les places sont limitées : seules 8 à 10 entreprises seront sélectionnées pour la mission 2026–27. Contactez-nous pour en savoir plus ou pour manifester votre intérêt." data-en="Places are limited: only 8 to 10 companies will be selected for the 2026–27 mission. Contact us to find out more or to express your interest.">Les places sont limitées : seules 8 à 10 entreprises seront sélectionnées pour la mission 2026–27. Contactez-nous pour en savoir plus ou pour manifester votre intérêt.</p>
+  <a href="/cdn-cgi/l/email-protection#3e4d105d5f52525b504d7e5b4e565b5d105c5b015d5d034b10565b4b52525b7e5b4e565b5d105c5b184d4b5c545b5d4a0377737a1b0c0e0c0e0c08130c0e0c091b0c0e131b0c0e77504f4b574c47" class="btn-white" data-fr="Contacter l'équipe IMD" data-en="Contact the IMD team">Contacter l'équipe IMD</a>
+</div>
+
+<div class="footer-bar">
+  <span>EPHEC · <span class="gr">International Market Development</span> · BAC 3 Marketing</span>
+  <span>2026–2027 · <span class="gr">Mission Suisse</span></span>
+</div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // Language switcher
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const lang = this.getAttribute('data-lang');
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('[data-fr]').forEach(el => {
+          const text = el.getAttribute('data-' + lang);
+          if (text) el.innerHTML = text;
+        });
+        document.documentElement.lang = lang;
+      });
+    });
+
+    // Nav active on scroll
+    const sections = document.querySelectorAll('[id]');
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
+    });
+
+  });
+</script>
+</body>
+</html>
