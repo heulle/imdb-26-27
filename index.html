@@ -576,16 +576,61 @@
 
   /* Responsive */
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; }
+    /* Hero */
+    .hero { grid-template-columns: 1fr; min-height: 100vh; height: auto; }
     .hero-right { display: none; }
-    .intro-grid, .mission-split, .cost-wrap { grid-template-columns: 1fr; }
+    .hero-left {
+      padding: 100px 24px 60px;
+      min-height: 100vh;
+      justify-content: flex-end;
+    }
+    .hero-logos {
+      left: 24px;
+      right: 80px;
+      top: 24px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-title { font-size: clamp(44px, 12vw, 72px); }
+    .hero-desc { font-size: 14px; }
+    .hero-cta { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .btn-solid, .btn-outline { width: 100%; text-align: center; }
+
+    /* Lang switcher */
+    .lang-bar { top: 24px; right: 16px; }
+
+    /* Nav */
+    nav { padding: 0 16px; overflow-x: auto; }
+    nav .nav-links { min-width: max-content; }
+    nav a { padding: 14px 14px; font-size: 10px; }
+    .nav-contact { padding: 8px 14px !important; }
+
+    /* Sections */
+    .section-wrap { padding: 50px 20px; }
+    .section-title { font-size: clamp(30px, 8vw, 48px); }
+
+    /* Grids */
+    .intro-grid { grid-template-columns: 1fr; gap: 30px; }
+    .mission-split { grid-template-columns: 1fr; }
+    .cost-wrap { grid-template-columns: 1fr; padding: 40px 24px; gap: 30px; }
     .stops-row { grid-template-columns: repeat(2, 1fr); }
-    .avantages-grid, .team-grid { grid-template-columns: 1fr; }
-    .section-wrap { padding: 60px 24px; }
-    nav { padding: 0 24px; }
-    .hero-left { padding: 80px 24px 60px; }
-    .footer-bar { padding: 24px; }
+    .avantages-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+
+    /* Cost number */
+    .cost-number { font-size: 72px; }
+
+    /* Footer */
+    .footer-bar { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 6px; }
     .contact-wrap { padding: 60px 24px; }
+    .contact-wrap::before { font-size: 160px; }
+  }
+
+  @media (max-width: 480px) {
+    .stops-row { grid-template-columns: 1fr; }
+    .hero-title { font-size: 44px; }
+    .logo-wallonia { display: none; }
+    .logo-sep { display: none; }
   }
 </style>
 </head>
